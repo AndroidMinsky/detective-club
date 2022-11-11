@@ -23,6 +23,7 @@ function App() {
   const [counter, setCounter] = useState(1);
   const [showWord, setShowWord] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const onSubmit = (data) => {
     const players = data.players;
@@ -31,7 +32,6 @@ function App() {
     filledArray[random] = "Conspirator";
     setWordArray(filledArray);
     setPlayers(players);
-    console.log(filledArray);
     reset();
   };
 
@@ -56,6 +56,16 @@ function App() {
     setCounter(1);
     setShowWord(false);
     setShowOptions(false);
+  };
+
+  const showResultsHandler = () => {
+    setShowResults(true);
+    setShowOptions(false);
+  };
+
+  const goBackHandler = () => {
+    setShowOptions(true);
+    setShowResults(false);
   };
 
   return (
@@ -145,7 +155,7 @@ function App() {
             </Form>
           </>
         )}
-        {!showOptions && wordArray.length > 0 && (
+        {!showOptions && !showResults && wordArray.length > 0 && (
           <div className="d-grid gap-4">
             <div className="display-3 text-center" style={{ color: "gray" }}>
               Ready Player {counter}
@@ -187,8 +197,24 @@ function App() {
             <Button size="lg" variant="info" onClick={showAgainHandler}>
               Show Again
             </Button>
+            <Button size="lg" variant="info" onClick={showResultsHandler}>
+              Show Results
+            </Button>
             <Button size="lg" variant="info" onClick={resetHandler}>
               Reset
+            </Button>
+          </div>
+        )}
+
+        {!showOptions && showResults && (
+          <div className="d-grid gap-4">
+            {wordArray.map((word, index) => (
+              <div className="display-3 text-center" style={{ color: "white" }}>
+                Player {index + 1} - {word}
+              </div>
+            ))}
+            <Button size="lg" variant="info" onClick={goBackHandler}>
+              Go Back
             </Button>
           </div>
         )}
